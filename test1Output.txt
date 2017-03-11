@@ -1,0 +1,27 @@
+
+int [reduce 9][shift]
+id 
+leftparen 
+int [reduce 9][shift]
+id [reduce 8][shift]
+rightparen [reduce 20][shift][reduce 17][shift]
+leftbrace 
+
+if [reduce 41][shift]
+leftparen 
+id 
+greater [reduce 86][shift][reduce 66][shift][shift][shift][shift][shift][shift]
+intconstant [reduce 93][shift][reduce 65][shift][shift][shift]
+rightparen [shift][shift][reduce 77][shift][shift][shift][shift][shift]
+return 
+id 
+multiplication [reduce 86][shift][reduce 66][shift][shift][shift][shift][shift][shift][shift][shift]
+id 
+leftparen 
+id 
+minus [reduce 86][shift][reduce 66][shift][shift][shift][shift][shift][shift][shift]
+intconstant [reduce 93][shift][reduce 65][shift][shift][shift]
+rightparen [shift][shift][shift][reduce 70][shift][shift][shift][shift][reduce 63][shift][reduce 91][shift][reduce 89][shift][reduce 67][shift][shift][shift]
+semicolon [shift][shift][shift][shift][reduce 71][shift][shift][shift][reduce 52][shift][reduce 59][shift][reduce 49][shift][reduce ][shift][reduce 55][shift][reduce 45][shift]
+
+else 

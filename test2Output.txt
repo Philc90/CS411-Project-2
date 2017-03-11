@@ -1,0 +1,12 @@
+
+
+class 
+id 
+extends 
+id [reduce 25][shift]
+
+leftbrace [reduce 29][shift]
+
+boolean [reduce 11][shift]
+id 
+assignop 

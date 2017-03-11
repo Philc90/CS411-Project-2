@@ -1,8 +1,9 @@
 %{
     void yyerror (char *s);
-    #include <stdbool.h>
     #include <stdlib.h>
     #include <stdio.h>
+    extern int yylex();
+    extern FILE * yyin;
 %}
 %start Program
 %token BOOLEAN BREAK CLASS DOUBLE ELSE EXTENDS FALSE FOR ID
@@ -14,7 +15,7 @@
 %token INTCONSTANT DOUBLECONSTANT STRINGCONSTANT BOOLEANCONSTANT
 
 %%
-Program             : Decl                  {printf("[reduce 1]");}
+Program             : Decl                  {printf("[reduce 1]"); printf("[accept]\n");}
                     | Decl Program          {printf("[reduce 2]");}
                     ;
 Decl                : VariableDecl          {printf("[reduce 3]");}
@@ -165,5 +166,21 @@ Constant            : INTCONSTANT {printf("[reduce 93]");}
                     | BOOLEANCONSTANT {printf("[reduce 96]");}
                     ;
 %%
-int main() {while(1) {yyparse();} return 0;}
-void yyerror (char *s) { fprintf (stderr, "%s\n", s);}
+int main(int argc, char * argv[]) {
+    if(argv[1] == NULL)
+    {
+        printf("Usage: ./toyParser filename.txt\n");
+        return 1;
+    }
+    yyin = fopen(argv[1], "r");
+    int ntoken = yyparse();
+    while(ntoken) {
+        ntoken = yyparse();
+    }
+
+    return 0;
+}
+void yyerror (char *s) {
+    fprintf (stderr, "%s\n", s);
+    exit(EXIT_FAILURE);
+}

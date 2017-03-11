@@ -1,0 +1,10 @@
+
+int [reduce 9][shift]
+id 
+leftparen 
+rightparen [reduce 18][shift]
+leftbrace 
+
+
+rightbrace [reduce 41][shift][reduce 43][shift][reduce 39][shift][reduce 15][shift][reduce 4][shift]
+[reduce 1][accept]
