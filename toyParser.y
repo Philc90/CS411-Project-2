@@ -51,8 +51,7 @@ _Fields             : Field _Fields {printf("[reduce 23]");}
 _MaybeExtends       : EXTENDS ID {printf("[reduce 25]");}
                     | /* empty */ {printf("[reduce 26]");}
                     ;
-_MaybeImplements    : IMPLEMENTS ID {printf("[reduce 27]");}
-                    | IMPLEMENTS _IDList {printf("[reduce 28]");}
+_MaybeImplements    : IMPLEMENTS _IDList {printf("[reduce 28]");}
                     | /* empty */ {printf("[reduce 29]");}
                     ;
 _IDList             : ID COMMA _IDList {printf("[reduce 30]");}
@@ -89,8 +88,12 @@ Stmt                : _MaybeExpr SEMICOLON {printf("[reduce 44]");}
 _MaybeExpr          : Expr {printf("[reduce 52]");}
                     | /* empty */ {printf("[reduce 53]");}
                     ;
-IfStmt              : IF LEFTPAREN Expr RIGHTPAREN Stmt {printf("[reduce 54]");}
-                    | IF LEFTPAREN Expr RIGHTPAREN Stmt ELSE Stmt {printf("[reduce 55]");}
+IfStmt              : _MatchedIfStmt {printf("[reduce 54]");}
+                    | _UnmatchedIfStmt  {printf("[reduce 55]");}
+                    ;
+_UnmatchedIfStmt    : IF LEFTPAREN Expr RIGHTPAREN Stmt {printf("[reduce ]");}
+                    ;
+_MatchedIfStmt      : IF LEFTPAREN Expr RIGHTPAREN _MatchedIfStmt ELSE _MatchedIfStmt {printf("[reduce ]");}
                     ;
 WhileStmt           : WHILE LEFTPAREN Expr RIGHTPAREN Stmt {printf("[reduce 56]");}
                     ;
@@ -105,28 +108,46 @@ PrintStmt           : PRINTLN LEFTPAREN _ExprList RIGHTPAREN SEMICOLON {printf("
 _ExprList           : Expr COMMA _ExprList {printf("[reduce 62]");}
                     | Expr {printf("[reduce 63]");}
                     ;
-Expr                : Lvalue ASSIGNOP Expr {printf("[reduce 64]");}
+Expr                : LEFTPAREN _Expr1 RIGHTPAREN {printf("[reduce 68]");}
+                    | _Expr1
+                    ;
+_Expr1              : MINUS _Expr2 {printf("[reduce 74]");}
+                    | NOT _Expr2 {printf("[reduce 83]");}
+                    | _Expr2
+                    ;
+_Expr2              : _Expr2 MULTIPLICATION _Expr3 {printf("[reduce 71]");}
+                    | _Expr2 DIVISION _Expr3 {printf("[reduce 72]");}
+                    | _Expr2 MOD _Expr3 {printf("[reduce 73]");}
+                    | _Expr3
+                    ;
+_Expr3              : _Expr3 PLUS _Expr4 {printf("[reduce 69]");}
+                    | _Expr3 MINUS _Expr4 {printf("[reduce 70]");}
+                    | _Expr4
+                    ;
+_Expr4              : _Expr4 LESS _Expr5 {printf("[reduce 75]");}
+                    | _Expr4 LESSEQUAL _Expr5 {printf("[reduce 76]");}
+                    | _Expr4 GREATER _Expr5 {printf("[reduce 77]");}
+                    | _Expr4 GREATEREQUAL _Expr5 {printf("[reduce 78]");}
+                    | _Expr5
+                    ;
+_Expr5              : _Expr5 EQUAL _Expr6 {printf("[reduce 79]");}
+                    | _Expr5 NOTEQUAL _Expr6 {printf("[reduce 80]");}
+                    | _Expr6
+                    ;
+_Expr6              : _Expr6 AND _Expr7 {printf("[reduce 81]");}
+                    | _Expr7
+                    ;
+_Expr7              : _Expr7 OR _Expr8 {printf("[reduce 82]");}
+                    | _Expr8
+                    ;
+_Expr8              : Lvalue ASSIGNOP _Expr9 {printf("[reduce 64]");}
+                    | _Expr9
+                    ;
+_Expr9              : READLN LEFTPAREN RIGHTPAREN {printf("[reduce 84]");}
+                    | NEWARRAY LEFTPAREN INTCONSTANT COMMA Type RIGHTPAREN {printf("[reduce 85]");}
                     | Constant {printf("[reduce 65]");}
                     | Lvalue {printf("[reduce 66]");}
                     | Call {printf("[reduce 67]");}
-                    | LEFTPAREN Expr RIGHTPAREN {printf("[reduce 68]");}
-                    | Expr PLUS Expr {printf("[reduce 69]");}
-                    | Expr MINUS Expr {printf("[reduce 70]");}
-                    | Expr MULTIPLICATION Expr {printf("[reduce 71]");}
-                    | Expr DIVISION Expr {printf("[reduce 72]");}
-                    | Expr MOD Expr {printf("[reduce 73]");}
-                    | MINUS Expr {printf("[reduce 74]");}
-                    | Expr LESS Expr {printf("[reduce 75]");}
-                    | Expr LESSEQUAL Expr {printf("[reduce 76]");}
-                    | Expr GREATER Expr {printf("[reduce 77]");}
-                    | Expr GREATEREQUAL Expr {printf("[reduce 78]");}
-                    | Expr EQUAL Expr {printf("[reduce 79]");}
-                    | Expr NOTEQUAL Expr {printf("[reduce 80]");}
-                    | Expr AND Expr {printf("[reduce 81]");}
-                    | Expr OR Expr {printf("[reduce 82]");}
-                    | NOT Expr {printf("[reduce 83]");}
-                    | READLN LEFTPAREN RIGHTPAREN {printf("[reduce 84]");}
-                    | NEWARRAY LEFTPAREN INTCONSTANT COMMA Type RIGHTPAREN {printf("[reduce 85]");}
                     ;
 Lvalue              : ID {printf("[reduce 86]");}
                     | Lvalue LEFTBRACKET Expr RIGHTBRACKET {printf("[reduce 87]");}
